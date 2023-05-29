@@ -1,0 +1,54 @@
+# Credits to https://medium.com/geekculture/deploy-a-nextjs-app-to-digitalocean-using-github-actions-and-docker-db7127bca3aa for the majority of the structure inf this workflow :)
+
+name: Build and Publish Image to Registry
+
+on:
+  push:
+    paths-ignore:
+      - "**.md"
+      - ".gitignore"
+    branches: ["dev"]
+
+env:
+  app_name: ivanskodje-strapi
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Check for changes
+        id: check-changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            docker:
+              - 'Dockerfile'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'src/**'
+
+      - name: Setup Environment Variables
+        if: steps.check-changes.outputs.docker == 'true'
+        run: |
+          echo "IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/${{ env.app_name }} | tr '[A-Z]' '[a-z]')" >> $GITHUB_ENV
+          echo "VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,' | sed -e 's/^v//')" >> $GITHUB_ENV
+
+      - name: Build Image
+        if: steps.check-changes.outputs.docker == 'true'
+        run: docker build . --file Dockerfile --tag ${{ env.app_name }} --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Login to Registry
+        if: steps.check-changes.outputs.docker == 'true'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push Image
+        if: steps.check-changes.outputs.docker == 'true'
+        run: |
+          docker tag ${{ env.app_name }} $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION

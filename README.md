@@ -36,6 +36,18 @@ yarn build
 
 Strapi gives you many possible deployment options for your project. Find the one that suits you on the [deployment section of the documentation](https://docs.strapi.io/developer-docs/latest/setup-deployment-guides/deployment.html).
 
+### With Docker
+
+#### To Production with ivanskodje-strapi:latest
+
+Build: `docker build --file Dockerfile --tag ivanskodje-strapi:latest .`
+Run: `docker run -d --restart unless-stopped -p 127.0.0.1:1338:1337 -e NODE_ENV=production --name ivanskodje-strapi ivanskodje-strapi:latest`
+
+#### Locally with ivanskodje-strapi:dev
+
+Build: `docker build --file Dockerfile --tag ivanskodje-strapi:dev .`
+Run: `docker run -d --restart unless-stopped -p 127.0.0.1:1338:1337 -e NODE_ENV=development --name ivanskodje-strapi ivanskodje-strapi:dev`
+
 ## 📚 Learn more
 
 - [Resource center](https://strapi.io/resource-center) - Strapi resource center.
