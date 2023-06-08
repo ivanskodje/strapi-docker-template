@@ -1,10 +1,10 @@
-version: '3'
+version: "3"
 services:
   strapi:
     container_name: ivanskodje-strapi
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     environment:
       DATABASE_HOST: postgres
       DATABASE_CLIENT: postgres
@@ -23,7 +23,7 @@ services:
       - ./.env:/opt/app/.env
       - ./public/uploads:/opt/app/public/uploads
     ports:
-      - '1338:1337'
+      - "1338:1337"
     networks:
       - strapi 
     depends_on:
@@ -39,7 +39,7 @@ services:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - ./ivanskodje-postgresql-data:/var/lib/postgresql/data
+      - ./postgresql-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
