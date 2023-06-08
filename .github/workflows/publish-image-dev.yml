@@ -8,7 +8,7 @@ on:
     branches: ["dev"]
 
 env:
-  app_name: ivanskodje-strapi
+  app_name: strapi-docker-template
 
 jobs:
   build-and-deploy:
