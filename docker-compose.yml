@@ -1,7 +1,7 @@
 version: "3"
 services:
   strapi:
-    container_name: ivanskodje-strapi
+    container_name: strapi-docker-app
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -23,7 +23,7 @@ services:
       - ./.env:/opt/app/.env
       - ./public/uploads:/opt/app/public/uploads
     ports:
-      - "1338:1337"
+      - "1337:1337"
     networks:
       - strapi 
     depends_on:
@@ -32,7 +32,7 @@ services:
 
   postgres:
     image: postgres:15
-    container_name: ivanskodje-postgresql
+    container_name: strapi-docker-app-postgresql
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
