@@ -1,6 +1,14 @@
 # 🚀 Getting started with Strapi
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html) (CLI) which lets you scaffold and manage your project in seconds.
+## After creating a new project from this Template
+
+After you have created a new project from this template, you are most likely going to get an `denied: installation not allowed to Create organization package` error in the github action script. In order to solve this you need to setup appropriate repository permissions.
+
+1. Go to your repository "Settings"
+2. Open "Actions" and select "General"
+3. Scroll down to "Workflow permissions"
+4. Select "Read and write permissions" and hit Save.
+5. Rerun Action.
 
 ### `develop`
 
